@@ -1,21 +1,40 @@
-import { NavigationContainer } from "@react-navigation/native"; 
-import AuthProvider, { AuthContext } from "./context/AuthContext"; 
-import AppDrawer from "./navigation/AppDrawer"; 
-import LoginScreen from "./screens/LoginScreen"; 
 import { useContext } from "react"; 
+import { View, StyleSheet } from "react-native"; 
+import { ThemeProvider, ThemeContext } from "./context/ThemeContext"; 
+import TodoListFetchScreen from "./screens/TodoListFetchScreen"; 
  
-function RootNavigator() { 
- const { user } = useContext(AuthContext); 
+function MainApp() { 
+ const { theme } = useContext(ThemeContext); 
  
- return user ? <AppDrawer /> : <LoginScreen />; 
+ return ( 
+   <View 
+     style={[ 
+       styles.container, 
+       theme === "dark" ? styles.dark : styles.light, 
+     ]} 
+   > 
+     <TodoListFetchScreen /> 
+   </View> 
+ ); 
 } 
  
 export default function App() { 
  return ( 
-   <AuthProvider> 
-     <NavigationContainer> 
-       <RootNavigator /> 
-     </NavigationContainer> 
-   </AuthProvider> 
+   <ThemeProvider> 
+     <MainApp /> 
+   </ThemeProvider> 
  ); 
 } 
+ 
+const styles = StyleSheet.create({ 
+ container: { 
+   flex: 1, 
+   paddingTop: 40, 
+ }, 
+ light: { 
+   backgroundColor: "#ffffff", 
+ }, 
+ dark: { 
+   backgroundColor: "#121212", 
+ }, 
+}); 
